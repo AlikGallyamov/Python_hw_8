@@ -1,3 +1,7 @@
+from dataclasses import dataclass
+
+
+@dataclass
 class Product:
     """
     Класс продукта
@@ -7,18 +11,13 @@ class Product:
     description: str
     quantity: int
 
-    def __init__(self, name, price, description, quantity):
-        self.name = name
-        self.price = price
-        self.description = description
-        self.quantity = quantity
 
     def check_quantity(self, quantity) -> bool:
         """
         TODO Верните True если количество продукта больше или равно запрашиваемому
             и False в обратном случае
         """
-        raise NotImplementedError
+        return self.quantity >= quantity
 
     def buy(self, quantity):
         """
@@ -26,12 +25,15 @@ class Product:
             Проверьте количество продукта используя метод check_quantity
             Если продуктов не хватает, то выбросите исключение ValueError
         """
-        raise NotImplementedError
+        if not self.check_quantity(quantity):
+            raise ValueError
+        self.quantity = self.quantity - quantity
+        return self.quantity
 
     def __hash__(self):
         return hash(self.name + self.description)
 
-
+@dataclass
 class Cart:
     """
     Класс корзины. В нем хранятся продукты, которые пользователь хочет купить.
@@ -41,17 +43,20 @@ class Cart:
     # Словарь продуктов и их количество в корзине
     products: dict[Product, int]
 
-    def __init__(self):
-        # По-умолчанию корзина пустая
-        self.products = {}
+    # def __init__(self):
+    #     # По-умолчанию корзина пустая
+    #     self.products = {}
 
     def add_product(self, product: Product, buy_count=1):
         """
         Метод добавления продукта в корзину.
         Если продукт уже есть в корзине, то увеличиваем количество
         """
-        raise NotImplementedError
-
+        if product in self.products:
+            self.products[product] = self.products[product] + buy_count
+        else:
+            self.products[product] = buy_count
+        return self.products
     def remove_product(self, product: Product, remove_count=None):
         """
         Метод удаления продукта из корзины.
