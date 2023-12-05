@@ -11,7 +11,6 @@ class Product:
     description: str
     quantity: int
 
-
     def check_quantity(self, quantity) -> bool:
         """
         TODO Верните True если количество продукта больше или равно запрашиваемому
@@ -32,6 +31,7 @@ class Product:
 
     def __hash__(self):
         return hash(self.name + self.description)
+
 
 @dataclass
 class Cart:
@@ -57,19 +57,26 @@ class Cart:
         else:
             self.products[product] = buy_count
         return self.products
+
     def remove_product(self, product: Product, remove_count=None):
         """
         Метод удаления продукта из корзины.
         Если remove_count не передан, то удаляется вся позиция
         Если remove_count больше, чем количество продуктов в позиции, то удаляется вся позиция
         """
-        raise NotImplementedError
+        if remove_count is None or remove_count >= self.products[product]:
+            del self.products[product]
+        else:
+            self.products[product] = self.products[product] - remove_count
+        return self.products
 
     def clear(self):
-        raise NotImplementedError
+
+        self.products.clear()
 
     def get_total_price(self) -> float:
-        raise NotImplementedError
+        total_price = [price.price * count for price, count in self.products.items()]
+        return sum(total_price)
 
     def buy(self):
         """

@@ -50,3 +50,17 @@ class TestCart:
         cart.add_product(product, 15)
         cart.add_product(product, 5)
         assert cart.products[product] == 20
+
+    def test_remove_product(self, product, cart):
+        cart.add_product(product, 30)
+        cart.remove_product(product, 15)
+        assert cart.products[product] == 15
+
+    def test_clear(self, cart, product):
+        cart.add_product(product, 15)
+        cart.clear()
+        assert cart.products == {}
+
+    def test_get_total_price(self, cart, product):
+        cart.add_product(product, 15)
+        assert cart.get_total_price() == 1500
