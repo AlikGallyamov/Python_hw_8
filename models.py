@@ -43,10 +43,6 @@ class Cart:
     # Словарь продуктов и их количество в корзине
     products: dict[Product, int]
 
-    # def __init__(self):
-    #     # По-умолчанию корзина пустая
-    #     self.products = {}
-
     def add_product(self, product: Product, buy_count=1):
         """
         Метод добавления продукта в корзину.
@@ -84,4 +80,9 @@ class Cart:
         Учтите, что товаров может не хватать на складе.
         В этом случае нужно выбросить исключение ValueError
         """
-        raise NotImplementedError
+        # quantity = [count for count in self.products.values()]
+        for prod, quantity in self.products.copy().items():
+            if Product.check_quantity(prod, quantity) is True:
+                del self.products[prod]
+            else:
+                raise ValueError
