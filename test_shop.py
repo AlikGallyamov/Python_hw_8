@@ -51,10 +51,20 @@ class TestCart:
         cart.add_product(product, 5)
         assert cart.products[product] == 20, f"Количество товаров в корзине не равно ожидаемому"
 
-    def test_remove_product(self, product, cart):
+    def test_remove_product_1(self, product, cart):
         cart.add_product(product, 30)
         cart.remove_product(product, 15)
         assert cart.products[product] == 15, f"Количество товаров в корзине не равно ожидаемому"
+
+    def test_remove_product_2(self, product, cart):
+        cart.add_product(product, 30)
+        cart.remove_product(product)
+        assert cart.products == {}, f"Корзина не пустая"
+
+    def test_remove_product_3(self, product, cart):
+        cart.add_product(product, 30)
+        cart.remove_product(product, 35)
+        assert cart.products == {}, f"Корзина не пустая"
 
     def test_clear(self, cart, product):
         cart.add_product(product, 15)
@@ -71,7 +81,8 @@ class TestCart:
         with pytest.raises(ValueError):
             cart.buy()
 
-    def test_buy(self, cart, product):
+    def test_buy_from_cart_1(self, cart, product):
         cart.add_product(product, 20)
         cart.buy()
         assert cart.products == {}, f"Корзина не пустая, товар не был куплен"
+        assert product.quantity == 980, f"Количество товаров на складе не уменьшилось"

@@ -80,8 +80,8 @@ class Cart:
         Учтите, что товаров может не хватать на складе.
         В этом случае нужно выбросить исключение ValueError
         """
-        # quantity = [count for count in self.products.values()]
         for prod, quantity in self.products.copy().items():
+            Product.buy(prod, quantity)
             if Product.check_quantity(prod, quantity) is True:
                 del self.products[prod]
             else:
